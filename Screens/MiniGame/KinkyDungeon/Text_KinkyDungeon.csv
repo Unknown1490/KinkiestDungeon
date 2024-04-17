@@ -328,8 +328,10 @@ KinkyDungeonStatDescSavourTheTaste,"Drinking a potion takes 2 turns"
 KinkyDungeonStatMagicHands,"Magic Hands"
 KinkyDungeonStatDescMagicHands,"Enemies can add restraints underneath existing restraints."
 
+KinkyDungeonStatStartCyberDollStorage,"Doll Processing"
+KinkyDungeonStatDescStartCyberDollStorage,"Start atop a conveyor on your way to be sealed away inside the Facility."
 KinkyDungeonStatStartCyberDoll,"Cyber Doll"
-KinkyDungeonStatDescStartCyberDoll,"Start in Cyber restraints."
+KinkyDungeonStatDescStartCyberDoll,"Start in full Cyber restraints."
 KinkyDungeonStatFuukaCollar,"Fuuka's Pet"
 KinkyDungeonStatDescFuukaCollar,"Start with Fuuka's collar and a few restraints."
 KinkyDungeonStatCommonFuuka,"Fuuka Fan Club"
@@ -367,7 +369,7 @@ KinkyDungeonStatQuakeCollar,"Quakehoof Associate"
 KinkyDungeonStatDescQuakeCollar,"Start with the Epsilon Collar, which regenerates mana when you play with yourself."
 RestraintQuakeCollar,Epsilon Collar
 RestraintQuakeCollarDesc,A collar reserved for the most prestigious of submissives.
-RestraintQuakeCollarDesc2,"Restores mana when you play with yourself, but increases the distraction given."
+RestraintQuakeCollarDesc2,"Restores mana when you play with yourself, but increases the distraction given. Only works when Desire is below the limit."
 
 
 KinkyDungeonStatBulletHell,"Bullet Hell"
@@ -1061,6 +1063,7 @@ DungeonNamemrb,Marble Halls
 DungeonNamedll,Doll Storage
 DungeonName20,
 DungeonNameDollRoom,Doll Processing
+DungeonNameDollStorage,Doll Processing
 DungeonNameBanditFort,Bandit Hideout
 DungeonNameGoldVault,Ancient Vault
 DungeonNamevault,Ancient Halls
@@ -3315,6 +3318,18 @@ KinkyDungeonUnlockDoorPurpleUse,You utter a command word and release the lock!
 KinkyDungeonPurpleLockRemoveFail,You mutter an unintelligible command word and your locks do not open.
 KinkyDungeonUnlockDoorPurpleUseGagged,You mumble a command word but the lock opens!
 KinkyDungeonUnlockDoorPurpleUseGaggedFail,"You mess up saying the command word. The lock stays put!"
+KinkyDungeonSwipeDoor,"Swipe Keycard"
+KinkyDungeonSwipeDoorUse,"You swipe your keycard and the lock releases with a hiss!"
+KinkyDungeonSwipeDoorFail,"You swipe your keycard and the lock beeps 'Access Denied'!"
+KinkyDungeonSwipeDoorNone,"You don't have any card to scan in the slot."
+KinkyDungeonScanDoor,"Use Retinal Scanner"
+KinkyDungeonScanDoorUse,"You scan your eye pattern and the lock releases with a hiss!"
+KinkyDungeonScanDoorFail,"The lock rejects you, citing your lack of authority."
+KinkyDungeonScanDoorNone,"You are blindfolded, so the scanner can't even see your eye!"
+KinkyDungeonHackDoor,"Hack"
+KinkyDungeonHackDoorUse,"You bypass the lock's cyber defenses and release it with a hiss!"
+KinkyDungeonHackDoorFail,"The lock beeps as its security blocks your attempts at release."
+KinkyDungeonHackDoorNone,"You have no way to hack the locking system."
 KinkyDungeonPickDoor,"Pick"
 KinkyDungeonLockedDoor,"(No way to open)"
 KinkyDungeonLockedShrine,"(She cannot help you)"
@@ -5336,6 +5351,7 @@ KDTileTooltipH,Mysterious Stairs
 KDTileTooltipG,Ghostly Adventurer
 KDTileTooltip@,Button
 KDTileTooltipV,Conveyor
+KDTileTooltipv,Safety Conveyor
 KDTileTooltipt,Doll Terminal
 KDTileTooltipu,Doll Supply
 KDTileTooltipN,Bondage Machine
@@ -12541,6 +12557,7 @@ KDPlugMachine,Metallic arms insert something into you!
 KDChastityMachine,Metallic arms attach a chastity belt over your waist!
 KDTapeMachine,Metallic arms wrap you in tape!
 KDMetalMachine,Metallic arms wrap you in strict restraints!
+KDDollMachine,Metallic arms install various cybernetic restraints!
 
 KDBearTrapHit,"You've sprung a trap! You've been stunned."
 KinkyDungeonSpellCastBearTrap,"The bandit leaves behind a sneaky trap..."
@@ -19536,7 +19553,7 @@ KinkyDungeonBuffDistractionShield,"You have formed a mental barrier..."
 
 
 KinkyDungeonSpellDistractionBurst,Desire Burst
-KinkyDungeonSpellDescriptionDistractionBurst,"Reduce your Desire by up to 30% of max DP, and convert the amount into a powerful explosion dealing (30 + 25% max DP) charm damage to nearby enemies (200% crit multiplier). If you don't have 50% Desire, the damage is reduced based on the amount. (Desire is the heart-shaped meter below your DP bar, and is gained slowly by being distracted)"
+KinkyDungeonSpellDescriptionDistractionBurst,"Reduce your Desire by up to 30% of max DP, and convert the amount into a powerful explosion dealing (30 + 25% max DP) charm damage to nearby enemies (200% crit multiplier). If you don't have at least 50% Desire, the damage is reduced based on the amount. (Desire is the heart-shaped meter below your DP bar, and is gained slowly by being distracted)"
 KDDistractionBurst_Yes,"You channel your distraction into a powerful explosion!"
 KDDistractionBurst_No,"You don't have enough of a desire to do that."
 KDDistractionBurst_NoMana,"You have the desire but not the mana!"
@@ -20761,7 +20778,7 @@ KDEscapePick,Pick
 KDEscapeCut,Cut
 
 KDQuakeCollar,"Your collar channels the vigor of excitement into magical energy!"
-
+KDQuakeCollarFail,"The collar has already squeezed what it can out of you. Clear your mind first!"
 
 NameForceFieldGuardian,Force Field Projector
 KillForceFieldGuardian,"The forcefield erupts into a shower of blue sparks!"
@@ -20786,3 +20803,5 @@ KillEnforcerBotGuardian,"The enforcer unit releases magic smoke and explodes."
 AttackEnforcerBotGuardian,"The enforcer unit fires many cables that squeeze you! (DamageTaken)"
 AttackEnforcerBotGuardianBind,"The enforcer fires off restraints that wrap around your body and apprehend you! (+RestraintAdded)"
 AttackEnforcerBotGuardianLock,"The enforcer releases small drones which lock onto your restraints! (DamageTaken)"
+
+

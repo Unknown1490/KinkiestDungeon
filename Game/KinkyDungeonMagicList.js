@@ -657,7 +657,7 @@ let KinkyDungeonSpellList = { // List of spells you can unlock in the 3 books. W
 				{type: "DistractionShield", trigger: "toggleSpell", power: 0.5, mult: 0.1, time: 10}, // power: shield per DP, mult: percentage gained as Desire
 			]},
 
-		{name: "DistractionBurst", tags: ["will", "offense"], prerequisite: "MagicalOverload", hideWithout: "DistractionCast", school: "Special", manacost: 7, components: [], defaultOff: true, time: 10, level:1, type:"passive", onhit:"", delay: 0, range: 0, lifetime: 0, power: 0, damage: "inert",
+		{name: "DistractionBurst", tags: ["will", "offense"], prerequisite: "OrgasmMana1", hideWithout: "DistractionCast", school: "Special", manacost: 7, components: [], defaultOff: true, time: 10, level:1, type:"passive", onhit:"", delay: 0, range: 0, lifetime: 0, power: 0, damage: "inert",
 			events: [
 				{type: "DistractionBurst", trigger: "toggleSpell", mult: 0.25, power: 3, aoe: 2.99, crit: 2, damage: "charm"},
 			]},
@@ -3434,6 +3434,14 @@ let KDSpecialBondage = {
 		struggleRate: 1.0,
 		powerStruggleBoost: 1.0,
 		healthStruggleBoost: 1.0,
+		enemyBondageMult: 1.0,
+	},
+	"Null": {
+		priority: 100,
+		color: "#ff5555",
+		struggleRate: 1,
+		powerStruggleBoost: 0.5,
+		healthStruggleBoost: 0.8,
 		enemyBondageMult: 1.0,
 	},
 	"Latex": {

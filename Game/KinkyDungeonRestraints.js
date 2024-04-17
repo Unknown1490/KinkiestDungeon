@@ -2113,6 +2113,7 @@ function KDGetStruggleData(data) {
 			if (KDToggles.Sound) AudioPlayInstantSoundKD(KinkyDungeonRootDirectory + "Audio/"
 				+ ((KDGetEscapeSFX(data.restraint) && KDGetEscapeSFX(data.restraint)[data.struggleType]) ? KDGetEscapeSFX(data.restraint)[data.struggleType] : "Struggle")
 				+ ".ogg");
+			return "Fail";
 		} else {
 			if (!data.query) {
 				let typesuff = "";
@@ -2270,6 +2271,7 @@ function KDGetStruggleData(data) {
 				data.restraint.attempts += 0.5;
 				if (data.escapeChance <= -0.5) data.restraint.attempts += 0.5;
 			}
+			return "Fail";
 		} else {
 			if (!data.query) {
 				if (KDToggles.Sound) AudioPlayInstantSoundKD(KinkyDungeonRootDirectory + "Audio/"
@@ -2484,7 +2486,7 @@ function KinkyDungeonStruggle(struggleGroup, StruggleType, index, query = false,
 			else
 				KinkyDungeonSendActionMessage(10, TextGet("KinkyDungeonStruggleCantPick" + restraint.lock + "Lock")
 					.replace("TargetRestraint", TextGet("Restraint" + restraint.name)), "orange", 2, true);
-		} else {
+		} else if (result != "Impossible") {
 
 			// Limit of what you can struggle to given current limit chance
 			let maxLimit = 100;
@@ -2800,7 +2802,7 @@ function KinkyDungeonStruggle(struggleGroup, StruggleType, index, query = false,
 				}
 			}
 
-			KinkyDungeonAdvanceTime(data.struggleTime > 1 ? 1 : 0);
+			KinkyDungeonAdvanceTime(1);
 			if (Pass == "Success") KinkyDungeonCurrentEscapingItem = null;
 			return Pass;
 		}
@@ -3625,6 +3627,7 @@ function KDCheckLinkSize(currentRestraint, restraint, bypass, NoStack, securityE
 				if (restraint.name == item.name && (!ignoreItem || ignoreItem?.id != item.id)) {
 					// Note: return false means succeed
 					// true means interupt
+					//if (restraint.noDupe) return true;
 					if (!props) return true;
 
 					if ((!KDGetCurse(item) && props.newCurse)
@@ -4636,6 +4639,7 @@ function KDAddDelayedStruggle(amount, time, StruggleType, struggleGroup, index, 
 				index: index,
 				amount: plus,
 				escapeData: data,
+				delta: time == 1 ? 0 : 1,
 			},
 			time: t,
 			tags: ["Action", "Remove", "Restrain", "Hit"],
