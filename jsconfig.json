@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"module": "commonjs",
 		"target": "ES2018",
-		"lib": ["es2018", "dom"],
+		"lib": ["ES2021", "dom"],
 		"checkJs": true
 	},
 	"include": ["Scripts/**/*", "Screens/**/*", "Assets/**/*", "Backgrounds/**/*.js", "Game/**/*", "Data/**/*"],
