@@ -622,7 +622,7 @@ function KinkyDungeonGetCost(Spell) {
 			if (s != Spell && s.increasingCost && (!KinkyDungeonStatsChoice.get("randomMode") || !s.tags?.includes("randomfree"))) bonus += 1;
 			if (s != Spell && s.decreaseCost) bonus -= 1;
 		}
-		if (KinkyDungeonStatsChoice.get("Studious") && bonus > -1) bonus = Math.max(-1, bonus - 2);
+		if (KinkyDungeonStatsChoice.get("Studious")) bonus = Math.max(-1, bonus - 2);
 	}
 	return cost + bonus;
 }

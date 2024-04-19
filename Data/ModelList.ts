@@ -104,7 +104,7 @@ AddModel({
 AddModel({
 	Name: "CatsuitLowerLeotard",
 	TopLevel: true,
-	Categories: ["Suits"],
+	Categories: ["Suits", "Underwear"],
 	Folder: "Catsuit",
 	Parent: "Catsuit",
 	Layers: ToLayerMap([
@@ -233,7 +233,7 @@ AddModel({
 	Name: "CatsuitTopV",
 	TopLevel: true,
 	Parent: "Catsuit",
-	Categories: ["Suits"],
+	Categories: ["Suits", "Tops", "Bras"],
 	Folder: "Catsuit",
 	Layers: ToLayerMap([
 		{ Name: "SleevelessTopV", Layer: "Bodysuit", Pri: -3.5,
