@@ -869,6 +869,23 @@ function KDGetCurse(item) {
 	return item?.curse || KDRestraint(item)?.curse;
 }
 
+function KinkyDungeonSingleRestraintMatchesShrine(
+	item,
+	shrine,
+	ignoreGold,
+	ignoreShrine
+) {
+	return (
+		((!KDRestraint(item).noShrine &&
+			(!KDGetCurse(item) || !KDCurses[KDGetCurse(item)].noShrine)) ||
+			ignoreShrine) &&
+		KDRestraint(item).shrine &&
+		KDRestraint(item).shrine.includes(shrine) &&
+		((ignoreGold && KDLocks[item.lock]?.unlockable) ||
+			!KDLocks[item.lock]?.shrineImmune)
+	);
+}
+
 /**
  *
  * @param {string} shrine
@@ -881,13 +898,13 @@ function KinkyDungeonGetRestraintsWithShrine(shrine, ignoreGold, recursive, igno
 	let ret = [];
 
 	for (let item of KinkyDungeonAllRestraint()) {
-		if (((!KDRestraint(item).noShrine && (!KDGetCurse(item) || !KDCurses[KDGetCurse(item)].noShrine)) || ignoreShrine) && KDRestraint(item).shrine && KDRestraint(item).shrine.includes(shrine) && (ignoreGold || !KDLocks[item.lock]?.shrineImmune)) {
+		if (KinkyDungeonSingleRestraintMatchesShrine(item, shrine, ignoreGold, ignoreShrine)) {
 			ret.push(item);
 		}
 		if (recursive) {
 			let link = item.dynamicLink;
 			while (link) {
-				if (((!KDRestraint(link).noShrine && (!KDGetCurse(link) || !KDCurses[KDGetCurse(link)].noShrine)) || ignoreShrine) && KDRestraint(link).shrine && KDRestraint(link).shrine.includes(shrine) && (ignoreGold || !KDLocks[link.lock]?.shrineImmune)) {
+				if (KinkyDungeonSingleRestraintMatchesShrine(link, shrine, ignoreGold, ignoreShrine)) {
 					ret.push(link);
 				}
 				link = link.dynamicLink;
@@ -910,7 +927,15 @@ function KinkyDungeonRemoveRestraintsWithShrine(shrine, maxCount, recursive, noP
 		/**
 		 * @type {item[]}
 		 */
-		let items = KinkyDungeonAllRestraint().filter((r) => {return ((!KDRestraint(r).noShrine && (!KDGetCurse(r) || !KDCurses[KDGetCurse(r)].noShrine)) || ignoreShrine) && KDRestraint(r).shrine && KDRestraint(r).shrine.includes(shrine) && (ignoreGold || !KDLocks[r.lock]?.shrineImmune);});
+		let items = KinkyDungeonAllRestraint().filter((r) => {return (
+			((!KDRestraint(r).noShrine &&
+			  (!KDGetCurse(r) || !KDCurses[KDGetCurse(r)].noShrine)) ||
+			  ignoreShrine) &&
+			KDRestraint(r).shrine &&
+			KDRestraint(r).shrine.includes(shrine) &&
+			((ignoreGold && KDLocks[r.lock]?.unlockable) ||
+			  !KDLocks[r.lock]?.shrineImmune)
+		  );});
 		// Get the most powerful item
 		let item = items.length > 0 ? items.reduce((prev, current) => (KinkyDungeonRestraintPower(prev, true) > KinkyDungeonRestraintPower(current, true)) ? prev : current) : null;
 		if (item) {
@@ -1668,6 +1693,7 @@ function KinkyDungeonPickAttempt() {
 	if (handsBound && strict < 0.5) escapeChance = Math.max(0, escapeChance - 0.5);
 	else if (strict) escapeChance = Math.max(0, escapeChance - strict);
 
+	if (KinkyDungeonStatsChoice.get("Psychic")) escapeChance = Math.max(escapeChance, 0.33);
 	escapeChance /= 1.0 + KinkyDungeonStatDistraction/KinkyDungeonStatDistractionMax*KinkyDungeonDistractionUnlockSuccessMod;
 
 	let chargecosts = true;
@@ -3086,20 +3112,13 @@ function KDGetRestraintsEligible(enemy, Level, Index, Bypass, Lock, RequireWill,
 	let RestraintsList2 = [];
 	if (!options?.allowLowPower) {
 		// Only does strictest for that group
-		let noway = KinkyDungeonStatsChoice.get("NoWayOut");
 		let groupPower = {};
-		let wornGroups = {};
-		for (let inv of KinkyDungeonAllRestraint()) {
-			wornGroups[KDRestraint(inv)?.Group] = true;
-		}
 		for (let r of RestraintsList) {
-			if (!wornGroups[r.restraint.Group] || !groupPower[r.restraint.Group] || noway) {
-				if (!groupPower[r.restraint.Group] || r.restraint.power >= groupPower[r.restraint.Group][0].restraint.power) {
-					if (!groupPower[r.restraint.Group]) groupPower[r.restraint.Group] = [r];
-					else {
-						if (r.restraint.power > groupPower[r.restraint.Group][0].restraint.power) groupPower[r.restraint.Group] = [r];
-						else groupPower[r.restraint.Group].push(r);
-					}
+			if (!groupPower[r.restraint.Group] || r.restraint.power >= groupPower[r.restraint.Group][0].restraint.power) {
+				if (!groupPower[r.restraint.Group]) groupPower[r.restraint.Group] = [r];
+				else {
+					if (r.restraint.power > groupPower[r.restraint.Group][0].restraint.power) groupPower[r.restraint.Group] = [r];
+					else groupPower[r.restraint.Group].push(r);
 				}
 			}
 		}
@@ -5174,7 +5193,10 @@ function KDGetTotalRestraintPower(player, requireSingleTag, requireAllTags, igno
 				continue;
 			}
 		}
-		if (ignoregold && KDLocks[item.lock]?.shrineImmune) continue;
+		if (
+			(!ignoregold || !KDLocks[item.lock]?.unlockable) &&
+			        KDLocks[item.lock]?.shrineImmune
+				) continue;
 		if (!ignoreShrine && (KDGetCurse(item) && KDCurses[KDGetCurse(item)].noShrine)) continue;
 		power += KinkyDungeonRestraintPower(item);
 	}
