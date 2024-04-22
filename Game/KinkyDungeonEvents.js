@@ -5249,7 +5249,7 @@ let KDEventMapSpell = {
 							for (let value of Object.values(toAdd)) {
 								if (!value.added) {
 									// We charge value added tax
-									KDGameData.RevealedTiles[value.x + ',' + value.y] = Math.max(e.dist - i + e.time, KDGameData.RevealedTiles[value.x + ',' + value.y] || 0);
+									KDRevealTile(value.x, value.y, e.dist - i + e.time);
 									//if (i < e.dist/2)
 									//KDGameData.RevealedFog[value.x + ',' + value.y] = Math.max(1, KDGameData.RevealedFog[value.x + ',' + value.y] || 0);
 									for (let x = value.x - 1; x <= value.x + 1; x++)
@@ -5832,17 +5832,18 @@ let KDEventMapWeapon = {
 		},
 	},
 	"getLights": {
-		"WeaponLight": (e, spell, data) => {
+		"WeaponLight": (e, weapon, data) => {
 			data.lights.push({brightness: e.power, x: KinkyDungeonPlayerEntity.x, y: KinkyDungeonPlayerEntity.y,
 				color: string2hex(e.color || "#ffffff")});
 		},
-		"WeaponLightDirectional": (e, spell, data) => {
+		"WeaponLightDirectional": (e, weapon, data) => {
 			let x = KinkyDungeonPlayerEntity.x;
 			let y = KinkyDungeonPlayerEntity.y;
 			let size = e.power - e.dist/2;
 			for (let i = 0; i < e.dist; i++) {
-				let x2 = x + KinkyDungeonPlayerEntity.facing_x;
-				let y2 = y + KinkyDungeonPlayerEntity.facing_y;
+
+				let x2 = x + KinkyDungeonPlayerEntity.facing_x_last || KinkyDungeonPlayerEntity.facing_x;
+				let y2 = y + KinkyDungeonPlayerEntity.facing_y_last || KinkyDungeonPlayerEntity.facing_y;
 				if (KinkyDungeonTransparentObjects.includes(KinkyDungeonMapGet(x2, y2))) {
 					x = x2;
 					y = y2;
@@ -7286,6 +7287,7 @@ let KDEventMapBullet = {
 		"ShadowShroudTele": (e, b, data) => {
 			let enemy = b.bullet?.source > 0 ? KinkyDungeonFindID(b.bullet.source) : null;
 			if (!enemy) return;
+			if (enemy.attackPoints > 0) return;
 			let target = null;
 			if (b.bullet.faction) {
 				let minDist = 1000;
@@ -7342,6 +7344,7 @@ let KDEventMapBullet = {
 		"DarkTele": (e, b, data) => {
 			let enemy = b.bullet?.source > 0 ? KinkyDungeonFindID(b.bullet.source) : null;
 			if (!enemy) return;
+			if (enemy.attackPoints > 0) return;
 			let target = null;
 			if (b.bullet.faction) {
 				let minDist = 1000;
@@ -9232,8 +9235,14 @@ let KDEventMapGeneric = {
 		"trainHeels": (e, data) => {
 			if (KinkyDungeonLastAction == "Move") {
 				let danger = KinkyDungeonInDanger();
+				let amt = 0.01;
+				let mult = (
+					(KinkyDungeonLeashingEnemy() && KDIsPlayerTetheredToLocation(KinkyDungeonPlayerEntity, KinkyDungeonLeashingEnemy().x, KinkyDungeonLeashingEnemy().y, KinkyDungeonLeashingEnemy()))
+					||
+					(KinkyDungeonJailGuard() && KDIsPlayerTetheredToLocation(KinkyDungeonPlayerEntity, KinkyDungeonJailGuard().x, KinkyDungeonJailGuard().y, KinkyDungeonJailGuard()))
+					) ? 1.2 : 0;
 				KDTickTraining("Heels", KDGameData.HeelPower > 0 && !(KDGameData.KneelTurns > 0) && danger,
-					KDGameData.HeelPower <= 0 && !danger, 0.01);
+					KDGameData.HeelPower <= 0 && !danger, amt, amt * mult);
 			}
 		},
 		"HighProfile": (e, data) => {

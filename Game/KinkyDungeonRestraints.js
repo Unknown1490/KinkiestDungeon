@@ -4156,13 +4156,14 @@ function KinkyDungeonAddRestraint(restraint, Tightness, Bypass, Lock, Keep, Link
  * @param {boolean} [UnLink] - If the item is being removed as part of an unlinking process
  * @param {entity} [Remover] - Who removes this
  * @param {boolean} [ForceRemove] - Ignore AlwaysKeep, for example if armor gets confiscated
- * @returns {boolean} true if the item was removed, false if it was not.
+ * @returns {item[]} removed items
  */
 function KinkyDungeonRemoveRestraintSpecific(item, Keep, Add, NoEvent, Shrine, UnLink, Remover, ForceRemove) {
 	KDUpdateItemEventCache = true;
+
 	let rest = KinkyDungeonGetRestraintItem(KDRestraint(item)?.Group);
 	if (rest == item) {
-		return KinkyDungeonRemoveRestraint(KDRestraint(item).Group, Keep, Add, NoEvent, Shrine, UnLink, Remover);
+		return KinkyDungeonRemoveRestraint(KDRestraint(item).Group, Keep, Add, NoEvent, Shrine, UnLink, Remover, ForceRemove);
 	} else if (KDRestraint(item)) {
 		let list = KDDynamicLinkList(rest, true);
 		for (let i = 1; i < list.length; i++) {
@@ -4171,7 +4172,7 @@ function KinkyDungeonRemoveRestraintSpecific(item, Keep, Add, NoEvent, Shrine, U
 			}
 		}
 	}
-	return false;
+	return [];
 }
 
 /**
@@ -4184,9 +4185,10 @@ function KinkyDungeonRemoveRestraintSpecific(item, Keep, Add, NoEvent, Shrine, U
  * @param {boolean} [UnLink] - If the item is being removed as part of an unlinking process
  * @param {entity} [Remover] - Who removes this
  * @param {boolean} [ForceRemove] - Ignore AlwaysKeep, for example if armor gets confiscated
- * @returns {boolean} true if the item was removed, false if it was not.
+ * @returns {item[]} items removed
  */
 function KinkyDungeonRemoveRestraint(Group, Keep, Add, NoEvent, Shrine, UnLink, Remover, ForceRemove) {
+	let rem = [];
 	KDRestraintDebugLog.push("Removing " + Group);
 	KDDelayedActionPrune(["Remove"]);
 	KDStruggleGroupLinkIndex = {};
@@ -4225,6 +4227,8 @@ function KinkyDungeonRemoveRestraint(Group, Keep, Add, NoEvent, Shrine, UnLink, 
 				if (removed.length > 0 && ((!Add && !UnLink) || (Add && UnLink)))
 					for (let invitem of (!Add && !UnLink) ? KDDynamicLinkList(item, true) : removed) {
 						let invrest = KDRestraint(invitem);
+
+						rem.push(JSON.parse(JSON.stringify(invitem)));
 						// @ts-ignore
 						let inventoryAs = invitem.inventoryVariant || invitem.inventoryAs || (Remover?.player ? invrest.inventoryAsSelf : invrest.inventoryAs);
 						if (invrest.inventory && !ForceRemove
@@ -4283,7 +4287,8 @@ function KinkyDungeonRemoveRestraint(Group, Keep, Add, NoEvent, Shrine, UnLink, 
 
 
 
-				if (rest.Group == "ItemNeck" && !Add && KinkyDungeonGetRestraintItem("ItemNeckRestraints")) KinkyDungeonRemoveRestraint("ItemNeckRestraints", KDRestraint(KinkyDungeonGetRestraintItem("ItemNeckRestraints")).inventory);
+				if (rest.Group == "ItemNeck" && !Add && KinkyDungeonGetRestraintItem("ItemNeckRestraints"))
+					rem.push(...KinkyDungeonRemoveRestraint("ItemNeckRestraints", KDRestraint(KinkyDungeonGetRestraintItem("ItemNeckRestraints")).inventory, undefined, undefined, Shrine, undefined, Remover, ForceRemove));
 
 				let sfx = (rest && KDGetRemoveSFX(rest)) ? KDGetRemoveSFX(rest) : "Struggle";
 				if (KDToggles.Sound) AudioPlayInstantSoundKD(KinkyDungeonRootDirectory + "Audio/" + sfx + ".ogg");
@@ -4300,10 +4305,10 @@ function KinkyDungeonRemoveRestraint(Group, Keep, Add, NoEvent, Shrine, UnLink, 
 			if (KinkyDungeonPlayerWeapon != KinkyDungeonPlayerWeaponLastEquipped && KinkyDungeonInventoryGet(KinkyDungeonPlayerWeaponLastEquipped)) {
 				KDSetWeapon(KinkyDungeonPlayerWeaponLastEquipped);
 			}
-			return true;
+			return rem;
 		}
 	}
-	return false;
+	return rem;
 }
 
 function KDIInsertRestraintUnderneath(restraint) {
@@ -4318,10 +4323,11 @@ function KDIInsertRestraintUnderneath(restraint) {
  * @param {boolean} [NoEvent] - If true, the item will not trigger any events.
  * @param {entity} [Remover] - Who removes this
  * @param {boolean} [ForceRemove] - Ignore AlwaysKeep, for example if armor gets confiscated
- * @returns {boolean} true if the item was removed, false if it was not.
+ * @returns {item[]} removed items
  */
 function KinkyDungeonRemoveDynamicRestraint(hostItem, Keep, NoEvent, Remover, ForceRemove) {
 	let item = hostItem.dynamicLink;
+	let rem = [];
 	if (item) {
 		const rest = KDRestraint(item);
 		if (!NoEvent)
@@ -4366,9 +4372,12 @@ function KinkyDungeonRemoveDynamicRestraint(hostItem, Keep, NoEvent, Remover, Fo
 				}
 			}
 
+
 			// Remove the item itself by unlinking it from the chain
 			KDRestraintDebugLog.push("Removing Dynamic " + item.name);
 			hostItem.dynamicLink = item.dynamicLink;
+			item.dynamicLink = undefined;
+			rem.push(JSON.parse(JSON.stringify(item)));
 			KDUpdateItemEventCache = true;
 			let r = KinkyDungeonGetRestraintItem(KDRestraint(hostItem).Group);
 			if (r) KDUpdateLinkCaches(r);
@@ -4395,9 +4404,8 @@ function KinkyDungeonRemoveDynamicRestraint(hostItem, Keep, NoEvent, Remover, Fo
 			KinkyDungeonUpdateStruggleGroups();
 		}
 		KinkyDungeonCancelFlag = false;
-		return true;
 	}
-	return false;
+	return rem;
 }
 
 /**

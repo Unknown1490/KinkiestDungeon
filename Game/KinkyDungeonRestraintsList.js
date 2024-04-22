@@ -782,7 +782,6 @@ const KinkyDungeonRestraints = [
 	},
 
 	{inventory: true, sfx: "FutureLock", name: "CyberBallGag", debris: "Belts", LinkableBy: [...KDBallGagLink], renderWhenLinked: [...KDBallGagLink],
-
 		factionFilters: {
 			Display: {color: "Highlight", override: false},
 			Harness: {color: "DarkNeutral", override: true},
@@ -791,6 +790,7 @@ const KinkyDungeonRestraints = [
 			HarnessMask: {color: "DarkNeutral", override: true},
 			Mask: {color: "DarkNeutral", override: true},
 			HarnessDisplay: {color: "Highlight", override: false},
+			Ball: {color: "Highlight", override: false},
 			HarnessRim: {color: "LightNeutral", override: true},
 			Muzzle: {color: "LightNeutral", override: true},
 		},
@@ -866,7 +866,7 @@ const KinkyDungeonRestraints = [
 
 		LinkableBy: [...KDJacketLink],
 		renderWhenLinked: [...KDJacketRender],
-		Model: "JacketHeavy",
+		Model: "JacketBolero",
 		Filters: {
 			"BeltsLower":{"gamma":1,"saturation":0,"contrast":1.2,"brightness":1.6166666666666665,"red":1.9333333333333333,"green":1,"blue":2.183333333333333,"alpha":1},
 			"BeltsChest":{"gamma":1,"saturation":0,"contrast":1.2,"brightness":1.6166666666666665,"red":1.9333333333333333,"green":1,"blue":2.183333333333333,"alpha":1},
@@ -874,6 +874,15 @@ const KinkyDungeonRestraints = [
 			"Arms":{"gamma":1,"saturation":1,"contrast":1.3666666666666667,"brightness":0.8500000000000001,"red":1,"green":1,"blue":1,"alpha":1},
 			"Chest":{"gamma":1,"saturation":1,"contrast":1.3666666666666667,"brightness":0.8500000000000001,"red":1,"green":1,"blue":1,"alpha":1},
 			"Lower":{"gamma":1,"saturation":1,"contrast":1.3666666666666667,"brightness":0.8500000000000001,"red":1,"green":1,"blue":1,"alpha":1}
+		},
+
+		factionFilters: {
+			BeltsLower: {color: "LightNeutral", override: false},
+			BeltsArms: {color: "LightNeutral", override: false},
+			BeltsChest: {color: "LightNeutral", override: false},
+			Arms: {color: "DarkNeutral", override: false},
+			Chest: {color: "DarkNeutral", override: false},
+			Lower: {color: "DarkNeutral", override: false},
 		},
 		Modules: [1, 1, 1, 1],
 		factionColor: [[0], [1], [3]],
@@ -890,7 +899,7 @@ const KinkyDungeonRestraints = [
 			"More_Jackets": 3.5,
 			"Less_Jackets": 0.1,
 		},
-		playerTags: {}, minLevel: 0, allFloors: true, shrine: ["Cyber", "Latex", "Straitjackets", "Block_ItemHands"]},
+		playerTags: {}, minLevel: 0, allFloors: true, shrine: ["Cyber", "Metal", "Latex", "Straitjackets", "Block_ItemHands"]},
 
 	{inventory: true, sfx: "FutureLock", name: "CyberHeels", inaccessible: true, Asset: "FuturisticHeels2", remove: ["Shoes"],
 		Model: "CyberBalletHeels",
@@ -1954,6 +1963,21 @@ const KinkyDungeonRestraints = [
 		],
 		enemyTags: {"latexSphere":100}, playerTags: {}, minLevel: 0, allFloors: true, shrine: ["Furniture", "Container", "Latex"], removeOnLeash: true,
 	},
+	// Future Box
+	{removePrison: true, name: "FutureBox", Asset: "Cage", Color: ['Default', 'Default', '#000000'], Group: "ItemDevices", power: 8, weight: 1,
+		Model: "FutureBox",
+		DefaultLock: "Red",
+		addTag: ["NoHogtie"],
+		tightType: "Secure",
+		factionFilters: {
+			Display: {color: "Highlight", override: false},
+			DoorNumeral: {color: "Highlight", override: false},
+			BackFade: {color: "Highlight", override: false},
+		},
+		escapeChance: {"Struggle": -10, "Cut": -0.7, "Remove": 10, "Pick": -10, "Unlock": -10},
+		helpChance: {"Remove": 0.5, "Pick": -0.1, "Unlock": 1.0},
+		enemyTags: {"futurebox":100}, playerTags: {}, minLevel: 0, allFloors: true, shrine: ["Furniture", "Container", "CyberBox"], ignoreSpells: true, removeOnLeash: true, immobile: true, enclose: true,
+		events: [{trigger: "tick", type: "callGuardFurniture", inheritLinked: true}, {trigger: "playerMove", type: "removeOnMove", inheritLinked: true}]},
 	// Barrel trap, always possible to struggle out but takes time
 	{removePrison: true, name: "BarrelTrap", Asset: "SmallWoodenBox", Color: "Default", Group: "ItemDevices", power: 2, weight: 1, immobile: true, alwaysStruggleable: true, blindfold: 6, enclose: true,
 		Model: "Barrel",
@@ -3397,7 +3421,7 @@ const KinkyDungeonRestraints = [
 		Model: "JacketBolero",
 		Filters: {
 			Arms: {"gamma":1,"saturation":1,"contrast":1.0333333333333332,"brightness":3.05,"red":1,"green":1,"blue":1,"alpha":1},
-			ChestBolero: {"gamma":1,"saturation":1,"contrast":1.0333333333333332,"brightness":3.05,"red":1,"green":1,"blue":1,"alpha":1},
+			Chest: {"gamma":1,"saturation":1,"contrast":1.0333333333333332,"brightness":3.05,"red":1,"green":1,"blue":1,"alpha":1},
 			BeltsArms: {"gamma":1,"saturation":0.05,"contrast":1.7166666666666666,"brightness":1,"red":1,"green":1,"blue":1,"alpha":1},
 			BeltsChest: {"gamma":1,"saturation":0.05,"contrast":1.7166666666666666,"brightness":1,"red":1,"green":1,"blue":1,"alpha":1},
 		},
@@ -3417,7 +3441,7 @@ const KinkyDungeonRestraints = [
 		Model: "JacketHeavyBolero",
 		Filters: {
 			Arms: {"gamma":1,"saturation":1,"contrast":1.0333333333333332,"brightness":3.05,"red":1,"green":1,"blue":1,"alpha":1},
-			ChestBolero: {"gamma":1,"saturation":1,"contrast":1.0333333333333332,"brightness":3.05,"red":1,"green":1,"blue":1,"alpha":1},
+			Chest: {"gamma":1,"saturation":1,"contrast":1.0333333333333332,"brightness":3.05,"red":1,"green":1,"blue":1,"alpha":1},
 			Lower: {"gamma":1,"saturation":1,"contrast":1.0333333333333332,"brightness":3.05,"red":1,"green":1,"blue":1,"alpha":1},
 			BeltsArms: {"gamma":1,"saturation":0.05,"contrast":1.7166666666666666,"brightness":1,"red":1,"green":1,"blue":1,"alpha":1},
 			BeltsChest: {"gamma":1,"saturation":0.05,"contrast":1.7166666666666666,"brightness":1,"red":1,"green":1,"blue":1,"alpha":1},
@@ -3443,7 +3467,7 @@ const KinkyDungeonRestraints = [
 		],
 		Filters: {
 			Arms: {"gamma":1,"saturation":1,"contrast":1.0333333333333332,"brightness":3.05,"red":1,"green":1,"blue":1,"alpha":1},
-			ChestBolero: {"gamma":1,"saturation":1,"contrast":1.0333333333333332,"brightness":3.05,"red":1,"green":1,"blue":1,"alpha":1},
+			Chest: {"gamma":1,"saturation":1,"contrast":1.0333333333333332,"brightness":3.05,"red":1,"green":1,"blue":1,"alpha":1},
 			BeltsArms: {"gamma":1,"saturation":0.05,"contrast":1.7166666666666666,"brightness":1,"red":1,"green":1,"blue":1,"alpha":1},
 			BeltsChest: {"gamma":1,"saturation":0.05,"contrast":1.7166666666666666,"brightness":1,"red":1,"green":1,"blue":1,"alpha":1},
 		},
@@ -3839,7 +3863,7 @@ const KinkyDungeonRestraints = [
 		Filters: {
 			BeltsChest: {"gamma":1,"saturation":0,"contrast":1.7166666666666666,"brightness":1,"red":1,"green":1,"blue":1,"alpha":1},
 			BeltsArms: {"gamma":1,"saturation":0,"contrast":1.7166666666666666,"brightness":1,"red":1,"green":1,"blue":1,"alpha":1},
-			ChestBolero: {"gamma":1,"saturation":1,"contrast":1.1333333333333333,"brightness":1.3666666666666667,"red":1,"green":1,"blue":1.9,"alpha":0.8333333333333333},
+			Chest: {"gamma":1,"saturation":1,"contrast":1.1333333333333333,"brightness":1.3666666666666667,"red":1,"green":1,"blue":1.9,"alpha":0.8333333333333333},
 			Arms: {"gamma":1,"saturation":1,"contrast":1.1333333333333333,"brightness":1.3666666666666667,"red":1,"green":1,"blue":1.9,"alpha":0.8333333333333333},
 			LatexLower: {"gamma":1,"saturation":1,"contrast":0.8666666666666667,"brightness":2.0833333333333335,"red":1,"green":1,"blue":1.9,"alpha":0.9166666666666666},
 			LatexUpper: {"gamma":1,"saturation":1,"contrast":0.8666666666666667,"brightness":2.0833333333333335,"red":1,"green":1,"blue":1.9,"alpha":0.9166666666666666},
@@ -3875,7 +3899,7 @@ const KinkyDungeonRestraints = [
 			BeltsChest: {"gamma":1,"saturation":0,"contrast":1.7166666666666666,"brightness":1,"red":1,"green":1,"blue":1,"alpha":1},
 			BeltsArms: {"gamma":1,"saturation":0,"contrast":1.7166666666666666,"brightness":1,"red":1,"green":1,"blue":1,"alpha":1},
 			BeltsLower: {"gamma":1,"saturation":0,"contrast":1.7166666666666666,"brightness":1,"red":1,"green":1,"blue":1,"alpha":1},
-			ChestBolero: {"gamma":1,"saturation":1,"contrast":1.1333333333333333,"brightness":1.3666666666666667,"red":1,"green":1,"blue":1.9,"alpha":0.8333333333333333},
+			Chest: {"gamma":1,"saturation":1,"contrast":1.1333333333333333,"brightness":1.3666666666666667,"red":1,"green":1,"blue":1.9,"alpha":0.8333333333333333},
 			Arms: {"gamma":1,"saturation":1,"contrast":1.1333333333333333,"brightness":1.3666666666666667,"red":1,"green":1,"blue":1.9,"alpha":0.8333333333333333},
 			Lower: {"gamma":1,"saturation":1,"contrast":1.1333333333333333,"brightness":1.3666666666666667,"red":1,"green":1,"blue":1.9,"alpha":0.8333333333333333},
 			LatexLower: {"gamma":1,"saturation":1,"contrast":0.8666666666666667,"brightness":2.0833333333333335,"red":1,"green":1,"blue":1.9,"alpha":0.9166666666666666},
@@ -3906,7 +3930,7 @@ const KinkyDungeonRestraints = [
 		Filters: {
 			BeltsChest: {"gamma":1,"saturation":0,"contrast":1.7166666666666666,"brightness":1,"red":1,"green":1,"blue":1,"alpha":1},
 			BeltsArms: {"gamma":1,"saturation":0,"contrast":1.7166666666666666,"brightness":1,"red":1,"green":1,"blue":1,"alpha":1},
-			ChestBolero: {"gamma":1,"saturation":1,"contrast":1.1333333333333333,"brightness":1.3666666666666667,"red":1,"green":1,"blue":1.9,"alpha":0.8333333333333333},
+			Chest: {"gamma":1,"saturation":1,"contrast":1.1333333333333333,"brightness":1.3666666666666667,"red":1,"green":1,"blue":1.9,"alpha":0.8333333333333333},
 			Arms: {"gamma":1,"saturation":1,"contrast":1.1333333333333333,"brightness":1.3666666666666667,"red":1,"green":1,"blue":1.9,"alpha":0.8333333333333333},
 			LatexLower: {"gamma":1,"saturation":1,"contrast":0.8666666666666667,"brightness":2.0833333333333335,"red":1,"green":1,"blue":1.9,"alpha":0.9166666666666666},
 			LatexUpper: {"gamma":1,"saturation":1,"contrast":0.8666666666666667,"brightness":2.0833333333333335,"red":1,"green":1,"blue":1.9,"alpha":0.9166666666666666},
@@ -3945,7 +3969,7 @@ const KinkyDungeonRestraints = [
 			BeltsChest: {"gamma":1,"saturation":0,"contrast":1.7166666666666666,"brightness":1,"red":1,"green":1,"blue":1,"alpha":1},
 			BeltsArms: {"gamma":1,"saturation":0,"contrast":1.7166666666666666,"brightness":1,"red":1,"green":1,"blue":1,"alpha":1},
 			BeltsLower: {"gamma":1,"saturation":0,"contrast":1.7166666666666666,"brightness":1,"red":1,"green":1,"blue":1,"alpha":1},
-			ChestBolero: {"gamma":1,"saturation":1,"contrast":1.1333333333333333,"brightness":1.3666666666666667,"red":1,"green":1,"blue":1.9,"alpha":0.8333333333333333},
+			Chest: {"gamma":1,"saturation":1,"contrast":1.1333333333333333,"brightness":1.3666666666666667,"red":1,"green":1,"blue":1.9,"alpha":0.8333333333333333},
 			Arms: {"gamma":1,"saturation":1,"contrast":1.1333333333333333,"brightness":1.3666666666666667,"red":1,"green":1,"blue":1.9,"alpha":0.8333333333333333},
 			Lower: {"gamma":1,"saturation":1,"contrast":1.1333333333333333,"brightness":1.3666666666666667,"red":1,"green":1,"blue":1.9,"alpha":0.8333333333333333},
 			LatexLower: {"gamma":1,"saturation":1,"contrast":0.8666666666666667,"brightness":2.0833333333333335,"red":1,"green":1,"blue":1.9,"alpha":0.9166666666666666},
@@ -3976,7 +4000,7 @@ const KinkyDungeonRestraints = [
 		Filters: {
 			BeltsChest: {"gamma":1,"saturation":0,"contrast":1.7166666666666666,"brightness":1,"red":1,"green":1,"blue":1,"alpha":1},
 			BeltsArms: {"gamma":1,"saturation":0,"contrast":1.7166666666666666,"brightness":1,"red":1,"green":1,"blue":1,"alpha":1},
-			ChestBolero: {"gamma":1,"saturation":1,"contrast":1.1333333333333333,"brightness":1.3666666666666667,"red":1,"green":1,"blue":1.9,"alpha":0.8333333333333333},
+			Chest: {"gamma":1,"saturation":1,"contrast":1.1333333333333333,"brightness":1.3666666666666667,"red":1,"green":1,"blue":1.9,"alpha":0.8333333333333333},
 			Arms: {"gamma":1,"saturation":1,"contrast":1.1333333333333333,"brightness":1.3666666666666667,"red":1,"green":1,"blue":1.9,"alpha":0.8333333333333333},
 			LatexLower: {"gamma":1,"saturation":1,"contrast":0.8666666666666667,"brightness":2.0833333333333335,"red":1,"green":1,"blue":1.9,"alpha":0.9166666666666666},
 			LatexUpper: {"gamma":1,"saturation":1,"contrast":0.8666666666666667,"brightness":2.0833333333333335,"red":1,"green":1,"blue":1.9,"alpha":0.9166666666666666},
@@ -6261,6 +6285,7 @@ const KinkyDungeonRestraints = [
 			protection: 1,
 			displayPower: 4,
 			noRecover: true,
+			removePrison: true,
 			events: [
 				{trigger: "tick", type: "ApplyConduction", duration: 2},
 				{trigger: "tick", type: "RestraintBlock", power: 2.5, inheritLinked: true},
@@ -6294,6 +6319,7 @@ const KinkyDungeonRestraints = [
 			restriction: 1,
 			protectionCursed: true,
 			noRecover: true,
+			removePrison: true,
 			events: [
 				{trigger: "tick", type: "RestraintBlock", power: 1, inheritLinked: true},
 			],
@@ -6325,6 +6351,7 @@ const KinkyDungeonRestraints = [
 			armor: true,
 			LinkAll: true, AlwaysLinkable: true, linkCategory: "Armor", linkSize: 0.6,
 			noRecover: true,
+			removePrison: true,
 			events: [
 				{trigger: "tick", type: "ApplyConduction", duration: 2},
 				{trigger: "tick", type: "armorBuff", power: 1.0, inheritLinked: true},
@@ -6360,6 +6387,7 @@ const KinkyDungeonRestraints = [
 			armor: true,
 			noRecover: true,
 			LinkAll: true, AlwaysLinkable: true, linkCategory: "Armor", linkSize: 0.6,
+			removePrison: true,
 			events: [
 				{trigger: "tick", type: "ApplyConduction", duration: 2},
 				{trigger: "tick", type: "RestraintBlock", power: 2.0, inheritLinked: true},
@@ -6391,6 +6419,7 @@ const KinkyDungeonRestraints = [
 			protectionCursed: true,
 			strictness: 0.15,
 			displayPower: 10,
+			removePrison: true,
 			events: [
 				{trigger: "tick", type: "ApplyConduction", duration: 2},
 				{trigger: "tick", type: "armorBuff", power: 0.5, inheritLinked: true},
@@ -6420,6 +6449,7 @@ const KinkyDungeonRestraints = [
 			debris: "Belts",
 			protection: 1,
 			displayPower: 10,
+			removePrison: true,
 			events: [
 				{trigger: "perksBonus", type: "spellDamage", power: 0.3, inheritLinked: true},
 				{trigger: "tick", type: "spellWardBuff", power: 1, inheritLinked: true},
@@ -6449,6 +6479,7 @@ const KinkyDungeonRestraints = [
 			debris: "Belts",
 			protectionCursed: true,
 			displayPower: 5,
+			removePrison: true,
 			events: [
 				{trigger: "tick", type: "ApplyConduction", duration: 2},
 				{trigger: "tick", type: "RestraintBlock", power: 3.5, inheritLinked: true},
@@ -6478,6 +6509,7 @@ const KinkyDungeonRestraints = [
 			debris: "Belts",
 			protectionCursed: true,
 			displayPower: 8,
+			removePrison: true,
 			events: [
 				{trigger: "tick", type: "ApplyConduction", duration: 2},
 				{trigger: "tick", type: "armorBuff", power: 0.5, inheritLinked: true},
@@ -6507,6 +6539,7 @@ const KinkyDungeonRestraints = [
 			protection: 1,
 			displayPower: 5,
 			noRecover: true,
+			removePrison: true,
 			events: [
 				{trigger: "tick", type: "ApplyConduction", duration: 2},
 				{trigger: "tick", type: "armorBuff", power: 0.5, inheritLinked: true},
@@ -6537,6 +6570,7 @@ const KinkyDungeonRestraints = [
 			LinkAll: true, AlwaysLinkable: true, linkCategory: "Armor", linkSize: 0.6,
 			debris: "Belts",
 			protection: 1,
+			removePrison: true,
 			events: [
 				{trigger: "tick", type: "RestraintBlock", power: 1, inheritLinked: true},
 			],
@@ -6564,6 +6598,7 @@ const KinkyDungeonRestraints = [
 			LinkAll: true, AlwaysLinkable: true, linkCategory: "Armor", linkSize: 0.6,
 			debris: "Belts",
 			protection: 1,
+			removePrison: true,
 			events: [
 				{trigger: "tick", type: "RestraintBlock", power: 1, inheritLinked: true},
 			],
@@ -6595,6 +6630,7 @@ const KinkyDungeonRestraints = [
 			debris: "Belts",
 			protection: 1,
 			displayPower: 6,
+			removePrison: true,
 			events: [
 				{trigger: "tick", type: "evasionBuff", power: .25, inheritLinked: true},
 				{trigger: "tick", type: "sneakBuff", power: .15, inheritLinked: true},
@@ -6622,6 +6658,7 @@ const KinkyDungeonRestraints = [
 			debris: "Chains",
 			protection: 1,
 			displayPower: 5,
+			removePrison: true,
 			events: [
 				{trigger: "perksBonus", type: "spellDamage", power: 0.05, inheritLinked: true},
 				{trigger: "tick", type: "spellWardBuff", power: 0.5, inheritLinked: true},
@@ -6651,6 +6688,7 @@ const KinkyDungeonRestraints = [
 			displayPower: 4,
 			debris: "Belts",
 			noRecover: true,
+			removePrison: true,
 			events: [
 				{trigger: "tick", type: "ApplyConduction", duration: 2},
 				{trigger: "tick", type: "armorBuff", power: 0.5, inheritLinked: true},
@@ -6681,6 +6719,7 @@ const KinkyDungeonRestraints = [
 			debris: "Belts",
 			displayPower: 2,
 			protection: 1,
+			removePrison: true,
 			events: [
 				{trigger: "tick", type: "RestraintBlock", power: 1.0, inheritLinked: true},
 			],

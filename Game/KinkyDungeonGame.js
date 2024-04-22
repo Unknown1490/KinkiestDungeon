@@ -177,6 +177,7 @@ function KDDefaultMapData(RoomType = "", MapMod = "") {
 
 		Labels: {},
 		PrisonState: "",
+		PrisonStateStack: [],
 		PrisonType: "",
 		data: {},
 
@@ -1001,6 +1002,7 @@ function KinkyDungeonCreateMap(MapParams, RoomType, MapMod, Floor, testPlacement
 		KDMapData.Labels = {};
 		KDMapData.data = {};
 		KDMapData.PrisonState = "";
+		KDMapData.PrisonStateStack = [];
 
 
 		// Place the player!
@@ -1278,6 +1280,7 @@ function KinkyDungeonCreateMap(MapParams, RoomType, MapMod, Floor, testPlacement
 
 			if (altType?.prisonType) {
 				let prisonType = KDPrisonTypes[altType.prisonType];
+				KDMapData.PrisonStateStack = [];
 				KDMapData.PrisonState = prisonType.starting_state;
 				KDMapData.PrisonType = prisonType.name;
 				for (let state of Object.values(prisonType.states)) {
@@ -3800,6 +3803,9 @@ function KinkyDungeonClickGame(Level) {
 							KDSetFocusControl("");
 							KinkyDungeonFastMovePath = path;
 							KinkyDungeonSleepTime = 100;
+						} else if (KDistChebyshev(KinkyDungeonPlayerEntity.x - KinkyDungeonTargetX, KinkyDungeonPlayerEntity.y - KinkyDungeonTargetY) < 1.5) {
+							KDSetFocusControl("");
+							KDSendInput("move", {dir: KinkyDungeonMoveDirection, delta: 1, AllowInteract: true, AutoDoor: KinkyDungeonToggleAutoDoor, AutoPass: KinkyDungeonToggleAutoPass, sprint: KinkyDungeonToggleAutoSprint, SuppressSprint: KinkyDungeonSuppressSprint});
 						}
 					} else if (!fastMove || Math.max(Math.abs(KinkyDungeonTargetX - KinkyDungeonPlayerEntity.x), Math.abs(KinkyDungeonTargetY - KinkyDungeonPlayerEntity.y)) <= 1) {
 						KDSetFocusControl("");
@@ -4443,8 +4449,13 @@ function KinkyDungeonMove(moveDirection, delta, AllowInteract, SuppressSprint) {
 						let lastFacingX = KinkyDungeonPlayerEntity.facing_x || 0;
 						let lastFacingY = KinkyDungeonPlayerEntity.facing_y || 0;
 
+
 						KinkyDungeonPlayerEntity.facing_x = Math.min(1, Math.abs(moveX - KinkyDungeonPlayerEntity.x)) * Math.sign(moveX - KinkyDungeonPlayerEntity.x);
 						KinkyDungeonPlayerEntity.facing_y = Math.min(1, Math.abs(moveY - KinkyDungeonPlayerEntity.y)) * Math.sign(moveY - KinkyDungeonPlayerEntity.y);
+						if (KinkyDungeonPlayerEntity.facing_x || KinkyDungeonPlayerEntity.facing_y) {
+							KinkyDungeonPlayerEntity.facing_x_last = KinkyDungeonPlayerEntity.facing_x;
+							KinkyDungeonPlayerEntity.facing_y_last = KinkyDungeonPlayerEntity.facing_y;
+						}
 						let inertia = KinkyDungeonPlayerEntity.facing_y*lastFacingY + KinkyDungeonPlayerEntity.facing_x*lastFacingX;
 						if ((KinkyDungeonPlayerEntity.facing_y || KinkyDungeonPlayerEntity.facing_x)
 							&& (KinkyDungeonStatsChoice.get("DirectionSlow") || KinkyDungeonStatsChoice.get("DirectionSlow2"))) {
@@ -4591,12 +4602,19 @@ function KinkyDungeonMove(moveDirection, delta, AllowInteract, SuppressSprint) {
 			KinkyDungeonInterruptSleep();
 			KinkyDungeonAdvanceTime(1);
 		} else { // If we are blind we can bump into walls!
-			if (KinkyDungeonGetVisionRadius() <= 1) {
+			if (KinkyDungeonVisionGet(moveX, moveY) <= 1) {
 				if (KDToggles.Sound) AudioPlayInstantSoundKD(KinkyDungeonRootDirectory + "Audio/Footstep.ogg");
 				KinkyDungeonSendActionMessage(2, TextGet("KDWallBump"), "white", 2);
 				KinkyDungeonInterruptSleep();
+				// Due to rendering system
+				if (moveDirection.y <= 0)
+					KDRevealTile(moveX, moveY + 1, 2);
+				if (moveDirection.y >= 0)
+					KDRevealTile(moveX, moveY - 1, 2);
+				KDRevealTile(moveX, moveY, 2);
 				KinkyDungeonAdvanceTime(1);
 			}
+
 		}
 	}
 
@@ -5461,4 +5479,9 @@ function KDPruneWorld() {
 function KDTurnToFace(dx, dy) {
 	KinkyDungeonPlayerEntity.facing_x = Math.min(1, Math.abs(dx)) * Math.sign(dx);
 	KinkyDungeonPlayerEntity.facing_y = Math.min(1, Math.abs(dy)) * Math.sign(dy);
+
+	if (KinkyDungeonPlayerEntity.facing_x || KinkyDungeonPlayerEntity.facing_y) {
+		KinkyDungeonPlayerEntity.facing_x_last = KinkyDungeonPlayerEntity.facing_x;
+		KinkyDungeonPlayerEntity.facing_y_last = KinkyDungeonPlayerEntity.facing_y;
+	}
 }

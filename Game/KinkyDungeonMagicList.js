@@ -710,7 +710,10 @@ let KinkyDungeonSpellList = { // List of spells you can unlock in the 3 books. W
 		{goToPage: 4, name: "ApprenticeWater", increasingCost: true, tags: ["magic", "randomfree"], autoLearn: ["WaterBall"], hideLearned: true, hideUnlearnable: true, school: "Elements", manacost: 0, spellPointCost: 1, components: [], level:1, passive: true, type:"", onhit:"", time: 0, delay: 0, range: 0, lifetime: 0, power: 0, damage: "inert"},
 		{goToPage: 4, name: "ApprenticeEarth", increasingCost: true, tags: ["magic", "randomfree"], autoLearn: ["StoneSkin"], hideLearned: true, hideUnlearnable: true, school: "Elements", manacost: 0, spellPointCost: 1, components: [], level:1, passive: true, type:"", onhit:"", time: 0, delay: 0, range: 0, lifetime: 0, power: 0, damage: "inert"},
 		{goToPage: 4, name: "ApprenticeAir", increasingCost: true, tags: ["magic", "randomfree"], autoLearn: ["WindBlast"], hideLearned: true, hideUnlearnable: true, school: "Elements", manacost: 0, spellPointCost: 1, components: [], level:1, passive: true, type:"", onhit:"", time: 0, delay: 0, range: 0, lifetime: 0, power: 0, damage: "inert"},
-		{goToPage: 4, name: "ApprenticeLightning", increasingCost: true, tags: ["magic", "randomfree"], autoLearn: ["Electrify"], hideLearned: true, hideUnlearnable: true, school: "Elements", manacost: 0, spellPointCost: 1, components: [], level:1, passive: true, type:"", onhit:"", time: 0, delay: 0, range: 0, lifetime: 0, power: 0, damage: "inert"},
+		{goToPage: 4, name: "ApprenticeLightning", increasingCost: true, tags: ["magic", "randomfree"], autoLearn: ["Electrify"], hideLearned: true, hideUnlearnable: true, school: "Elements", manacost: 0, spellPointCost: 1, components: [], level:1, passive: true, type:"", onhit:"", time: 0, delay: 0, range: 0, lifetime: 0, power: 0, damage: "inert",
+			events: [
+				{type: "Buff", trigger: "tick", power: 0.5, buffType: "blindResist"},
+			],},
 		{goToPage: 4, name: "ApprenticeIce", increasingCost: true, tags: ["magic", "randomfree"], autoLearn: ["Freeze"], hideLearned: true, hideUnlearnable: true, school: "Elements", manacost: 0, spellPointCost: 1, components: [], level:1, passive: true, type:"", onhit:"", time: 0, delay: 0, range: 0, lifetime: 0, power: 0, damage: "inert"},
 
 		{name: "Earthform", tags: ["earth", "utility", "summon"], autoLearn: ["EarthformRing", "EarthformMound", "EarthformLine", "EarthformArc"], prerequisite: "ApprenticeEarth", hideLearned: true, school: "Elements", manacost: 0, spellPointCost: 1, components: [], level:1, type:"", onhit:"", time: 0, delay: 0, range: 0, lifetime: 0, power: 0, damage: "inert"},
@@ -1339,6 +1342,9 @@ let KinkyDungeonSpellList = { // List of spells you can unlock in the 3 books. W
 		{name: "StormCrystal", prerequisite: "ApprenticeSummon", tags: ["summon", "denial", "offense"], noise: 7, sfx: "MagicSlash", school: "Conjure", manacost: 10, components: ["Legs"], noTargetEnemies: true, noTargetPlayer: true, piercing: true, level:1, type:"hit", noSprite: true, onhit:"summon", summon: [{name: "StormCrystal", count: 1, time: 9999, bound: true}], power: 0, time: 30, delay: -1, range: 2.5, size: 1, aoe: 0.5, lifetime: 1, damage: "fire"},
 		{noAggro: true, name: "Heal", prerequisite: "ApprenticeLight",  bulletSpin: 0.1, hitSpin: 0.4, noise: 3, sfx: "FireSpell", school: "Conjure", manacost: 4, components: ["Verbal"], level:1, type:"inert", onhit:"aoe", delay: 1, power: 1.5, range: 4.5, size: 5, aoe: 2.9, lifetime: 4, time: 2, damage: "heal", channel: 4},
 		{noAggro: true, buff: true, heal: true, name: "Heal2", prerequisite: "ApprenticeLight", sfx: "MagicSlash", school: "Conjure", manacost: 3, components: ["Verbal"], noTargetPlayer: true, mustTarget: true, level:1, type:"hit",
+			events: [
+				{type: "Buff", trigger: "tick", power: 1.0, buffType: "blindResist"},
+			],
 			onhit:"heal", time:2, lifetime: 1, delay: 1, power: 4.5, aoe: 0.9, range: 7, size: 1, damage: "inert"},
 		/*{name: "FloatingWeapon", prerequisite: "ApprenticePhysics", tags: ["buff", "offense", "physics"], sfx: "MagicSlash", school: "Conjure", manacost: 2, components: [], level:3, type:"passive",
 			events: [
@@ -1604,7 +1610,7 @@ let KinkyDungeonSpellList = { // List of spells you can unlock in the 3 books. W
 			trailspawnaoe: 1.5, trailPower: 0, trailLifetime: 1, trailHit: "", trailDamage:"inert", trail:"lingering", trailChance: 0.4},
 		{name: "Decoy", tags: ["summon", "utility", "stealth", "defense"], prerequisite: "ApprenticeProjection", sfx: "MagicSlash", school: "Illusion", manacost: 6, components: ["Legs"], noTargetEnemies: true, noTargetPlayer: true, level:1, type:"hit", noSprite: true, onhit:"summon", summon: [{name: "Decoy", count: 1, time: 20}], power: 0, time: 20, delay: -1, range: 4, size: 1, aoe: 0, lifetime: 1, damage: "fire"},
 
-		{name: "HolyOrb", prerequisite: "ApprenticeLight", tags: ["light", "summon", "defense"], sfx: "MagicSlash", school: "Conjure", manacost: 14, components: ["Legs"], noTargetEnemies: true, noTargetPlayer: true, piercing: true, level:1, type:"hit", noSprite: true, onhit:"summon", summon: [{name: "HolyOrb", count: 1, time: 9999, bound: true}], power: 0, time: 9999, delay: -1, range: 3.5, size: 1, aoe: 0.5, lifetime: 1, damage: "inert"},
+		{name: "HolyOrb", prerequisite: "ApprenticeLight", tags: ["light", "summon", "defense"], sfx: "MagicSlash", school: "Illusion", manacost: 14, components: ["Legs"], noTargetEnemies: true, noTargetPlayer: true, piercing: true, level:1, type:"hit", noSprite: true, onhit:"summon", summon: [{name: "HolyOrb", count: 1, time: 9999, bound: true}], power: 0, time: 9999, delay: -1, range: 3.5, size: 1, aoe: 0.5, lifetime: 1, damage: "inert"},
 
 		{name: "ShadowWarrior", prerequisite: "ApprenticeShadow", tags: ["summon", "offense", "shadow", "dot"], sfx: "MagicSlash", school: "Illusion", manacost: 10, components: ["Verbal"], noTargetEnemies: true, noTargetPlayer: true, level:1, type:"hit", noSprite: true, onhit:"summon", summon: [{name: "ShadowWarrior", count: 1, time: 12}], power: 6, time: 12, delay: -1, range: 3.5, size: 1, aoe: 0, lifetime: 1, damage: "inert"},
 

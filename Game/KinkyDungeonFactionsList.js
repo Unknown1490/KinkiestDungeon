@@ -80,7 +80,7 @@ let KinkyDungeonFactionFilters = {
 		// Tis inverted, light is dark and dark is light
 		LightNeutral: {"gamma":0.8,"saturation":0.1,"contrast":2.05,"brightness":0.5333333333333333,"red":1,"green":1,"blue":1,"alpha":1},
 		Highlight: {"gamma":0.7833333333333334,"saturation":0,"contrast":2.8666666666666667,"brightness":1.1833333333333333,"red":2.4166666666666665,"green":0.6166666666666667,"blue":1.76,"alpha":1},
-		DarkNeutral: {"gamma":1,"saturation":0.1,"contrast":1.15,"brightness":0.7,"red":1.2166666666666665,"green":0.65,"blue":1.76,"alpha":1},
+		DarkNeutral: {"gamma":1,"saturation":0.0,"contrast":1.15,"brightness":0.7,"red":1.2166666666666665,"green":0.65,"blue":1.76,"alpha":1},
 	},
 	"Latex": {
 		Catsuit: {"gamma":1,"saturation":0,"contrast":0.9299999999999999,"brightness":1,"red":4.509803921568627,"green":0.8431372549019608,"blue":4.745098039215686,"alpha":1},
@@ -127,9 +127,9 @@ let KinkyDungeonFactionFilters = {
 	},
 	"AncientRobot": {
 		Catsuit: {"gamma":1.0166666666666666,"saturation":0,"contrast":0.8999999999999999,"brightness":1.4000000000000001,"red":0.7666666666666666,"green":1,"blue":4.833333333333333,"alpha":1},
-		DarkNeutral: {"gamma":1.5,"saturation":0,"contrast":2.1166666666666667,"brightness":0.8833333333333333,"red":0.3666666666666667,"green":0.6666666666666666,"blue":2.4166666666666665,"alpha":1},
+		DarkNeutral: {"gamma":1.5,"saturation":0,"contrast":2.1166666666666667,"brightness":0.9833333333333333,"red":0.7666666666666667,"green":1,"blue":4.4166666666666665,"alpha":1},
 		LightNeutral: {"gamma":0.7666666666666666,"saturation":0,"contrast":2.1166666666666667,"brightness":0.8833333333333333,"red":0.3666666666666667,"green":0.6666666666666666,"blue":2.4166666666666665,"alpha":1},
-		Highlight: {"gamma":0.5333333333333333,"saturation":0,"contrast":2.6500000000000004,"brightness":0.95,"red":1.85,"green":0.7833333333333334,"blue":0.7666666666666666,"alpha":1},
+		Highlight: {"gamma":0.5333333333333333,"saturation":0,"contrast":2.6500000000000004,"brightness":0.95,"red":1.85,"green":0.633333333333334,"blue":0.7666666666666666,"alpha":1},
 	},
 	"Mushy": {
 		Catsuit: {"gamma":1.0166666666666666,"saturation":0,"contrast":0.8999999999999999,"brightness":1.4000000000000001,"red":1.7333333333333334,"green":2.5166666666666666,"blue":1.55,"alpha":1},
@@ -609,7 +609,7 @@ let KinkyDungeonFactionRelationsBase = {
 		Bast: -0.6,
 		Elf: -0.3,
 		Mushy: -0.6,
-		AncientRobot: -0.4,
+		AncientRobot: -0.2,
 
 		// Special factions
 		Angel: 0.1,
